@@ -1,0 +1,94 @@
+/*Source code of expert system*/
+go:-
+hypothesis(Career),
+write('The student is desired to choose '),
+write(Career),
+nl,
+write('ALL THE BEST! '),
+undo.
+/*Hypothesis that should be checked*/
+hypothesis(engineering) :- engineering, !.
+hypothesis(armedforces) :- armedforces, !.
+hypothesis(medical) :- medical, !.
+hypothesis(arts) :- arts, !.
+hypothesis(commerce) :- commerce, !.
+hypothesis(unknown). /* no options matched*/
+/*Hypothesis Identification Rules*/
+engineering :-
+verify(mathematics),
+verify(problemsolving),
+verify(language),
+verify(creativity),
+
+write('Advices and Sugestions:'),
+nl,
+
+write('Prepare well for engineering entrance examinations.'),
+nl.
+armedforces :-
+verify(physicaltraining),
+verify(problemsolving),
+verify(generalknowledge),
+verify(leadership),
+write('Advices and Sugestions:'),
+nl,
+
+write('Practice hard and let your actions speak louder than words.'),
+nl.
+medical :-
+verify(language),
+verify(biology),
+verify(problemsolving),
+verify(creativity),
+write('Advices and Sugestions:'),
+nl,
+
+write('Prepare well for medical entrance examinations.'),
+nl.
+arts :-
+verify(language),
+verify(performingarts),
+verify(history),
+verify(management),
+write('Advices and Sugestions:'),
+nl,
+
+write('Keep up with your reading skills and keep exploring.'),
+nl.
+commerce :-
+verify(language),
+verify(mathematics),
+verify(economics),
+verify(businessstudies),
+verify(creativity),
+write('Advices and Sugestions:'),
+nl,
+
+write('Do not get distracted from studies and keep learning.'),
+nl.
+/* how to ask questions */
+ask(Question) :-
+write('Does the student have following interest:'),
+write(Question),
+write('? '),
+read(Response),
+nl,
+( (Response == yes ; Response == y)
+->
+assert(yes(Question)) ;
+assert(no(Question)), fail).
+:- dynamic yes/1,no/1.
+/*How to verify something */
+verify(S) :-
+(yes(S)
+->
+true ;
+(no(S)
+
+->
+fail ;
+ask(S))).
+/* undo all yes/no assertions*/
+undo :- retract(yes(_)),fail.
+undo :- retract(no(_)),fail.
+undo.
